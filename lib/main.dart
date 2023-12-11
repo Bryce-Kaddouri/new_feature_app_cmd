@@ -29,6 +29,7 @@ void main(List<String> arguments) {
 
     if (projectPath != null) {
       initProject(projectPath);
+      // have to fix it
       isInitialized = true;
     } else {
       print('Error: Please provide a project path.');
