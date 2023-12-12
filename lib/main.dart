@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:flutter/material.dart';
 String test= 'test';
 void main(List<String> arguments) {
   ArgParser initParser() {
@@ -133,6 +134,17 @@ bool isInitialized() {
   bool projectPath =
       configJson['projectPath'] != null || configJson['projectPath'] != '';
   return configFile.existsSync() && projectPath;
+}
+
+
+// state less widget
+class MyWidget extends StatelessWidget {
+  const MyWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
 
 

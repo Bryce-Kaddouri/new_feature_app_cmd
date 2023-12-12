@@ -141,28 +141,48 @@ class ''' + name + '''Model {
 ''')
 
             create_item(path + '/data/repository', is_folder=True)
-            create_item(path + '/data/repository/' + snake_name + '_repository_impl.dart', is_folder=False, content='''
-import '../../business/repository/''' + snake_name + '''_repository.dart';
-import '../datasource/''' + snake_name + '''_datasource.dart';
-
-
-class ''' + name + '''RepositoryImpl implements ''' + name + '''Repository {
-    final ''' + name + '''DataSource ''' + '''dataSource;
-    const ''' + name + '''RepositoryImpl({required this.dataSource});
-}
-''')
-
 
             create_item(path + '/business', is_folder=True)
             create_item(path + '/business/param', is_folder=True)
 
             create_item(path + '/business/repository', is_folder=True)
-            create_item(path + '/business/repository/' + snake_name + '_repository.dart', is_folder=False, content='''
-abstract class ''' + name + '''Repository {
 
-}''')
 
             create_item(path + '/business/usecase', is_folder=True)
+            create_method_isDone = False
+            content_repo_abstract = '''abstract class ''' + name + '''Repository {'''
+            content_repo_impl = '''
+import '../../business/repository/''' + snake_name + '''_repository.dart';
+import '../datasource/''' + snake_name + '''_datasource.dart';
+
+class ''' + name + '''RepositoryImpl implements ''' + name + '''Repository {
+    final ''' + name + '''DataSource ''' + '''dataSource;
+    const ''' + name + '''RepositoryImpl({required this.dataSource});
+'''
+
+            while not create_method_isDone:
+                want_method = input('Do you want to create a new method in repository? (y/n): ')
+
+                if want_method == 'y':
+                    method_name = input('Enter the name of the method (nameOfMethod): ')
+                    content_repo_abstract += '''
+    Future<void> ''' + method_name + '''();'''
+                    content_repo_impl += '''
+    @override
+    Future<void> ''' + method_name + '''() async {
+    }'''
+                else:
+                    create_method_isDone = True
+
+            content_repo_abstract += '''
+}
+'''
+            content_repo_impl += '''
+}
+'''
+            create_item(path + '/data/repository/' + snake_name + '_repository_impl.dart', is_folder=False, content=content_repo_impl)
+            create_item(path + '/business/repository/' + snake_name + '_repository.dart', is_folder=False, content=content_repo_abstract)
+
 
             print('Feature created successfully')
 
